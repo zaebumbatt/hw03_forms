@@ -1,7 +1,12 @@
 from django import forms
-from .models import Group
+from .models import Post
 
 
-class PostForm(forms.Form):
-    group = forms.ModelChoiceField(queryset=Group.objects.all(), required=False)
-    text = forms.CharField(widget=forms.Textarea)
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['group', 'text']
+        labels = {
+            'group': 'Группа',
+            'text': 'Текст'
+        }

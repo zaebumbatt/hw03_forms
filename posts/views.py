@@ -19,10 +19,11 @@ def new_post(request):
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
-            user = User.objects.get(username=request.user.username)
-            text = form.cleaned_data['text']
-            group = form.cleaned_data['group']
-            Post.objects.create(text=text, group=group, author=user)
+            post = form.save(commit=False)
+            post.author = request.user
+            post.text = form.cleaned_data['text']
+            post.group = form.cleaned_data['group']
+            post.save()
             return redirect('index')
     form = PostForm()
     return render(request, "new.html", {"form": form})
