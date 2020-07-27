@@ -18,16 +18,15 @@ def group_posts(request, slug):
 
 @login_required
 def new_post(request):
-    form = PostForm()
     if request.method == "POST":
         form = PostForm(request.POST)
-
-    if form.is_valid():
-        post = form.save(commit=False)
-        post.author = request.user
-        post.text = form.cleaned_data['text']
-        post.group = form.cleaned_data['group']
-        post.save()
-        return redirect('index')
-
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.text = form.cleaned_data['text']
+            post.group = form.cleaned_data['group']
+            post.save()
+            return redirect('index')
+    else:
+        form = PostForm()
     return render(request, "new.html", {"form": form})
